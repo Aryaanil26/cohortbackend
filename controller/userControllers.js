@@ -1,23 +1,107 @@
-const { user }= require("../model/userModel");
+const { User }= require("../model/userModel");
 const bcrypt = require('bcrypt');
+const { generateToken } = require("../utils/token");
 
 const userSignup = async (req, res, next) => {
     try {
-        const { name, email, password, profilePic } =req.body;
+        const { name, email, password, profilePic } = req.body;
         if (!name || !email || !password) {
-            res.status(400).json({ success:true, message: "all fields required"});
+            res.status(400).json({ success: false, message: "all fields required" });
         }
-        const isUserExist = await user.findOne({ email});
+        const isUserExist = await User.findOne({ email });
 
         if (isUserExist) {
             return res.status(400).json({ message: "user already exist"});
         }
         
         const saltRounds = 10;
-        const hashPassword = bcrypt.hashSync(myPlaintextPassword, saltRounds);
-        console.log(hashPassword,'=====hashedpassword');
+        const hashedPassword = bcrypt.hashSync(password, saltRounds);
+        
+
+        const newUser = new User({ name, email, password, hashedPassword, phone, profilePic});
+        await newUser.save();
+
+        const token = generateToken(newUser._id);
+
+     res.cookie("token", token);
+     res.json({ success:true, message: "user created successfully"});
 
     } catch (error) {
         console.log(error);
+        res.status(error.statusCode  || 500).json({message: error.message || "internal server error"})
     }
 };
+
+
+const userLogin = async (req, res, next) => {
+    try {
+        const{ email , password} = req.body;
+        if( !email ||!password){
+            res.status(400).json({message: "all fields required"});
+        }
+
+        const userExist = await User.findOne({ email });
+        if (!userExist) {
+            return res.status(404).json({ success: false, message: "user does  not exist"});
+        }
+      
+        const passwordMatch = bcrypt.compareSync(password, userExist.password);
+        if(!passwordMatch)  {
+            return res.status(401).json({message: "user not authorized" });
+        }
+
+
+       const token = generateToken(userExist._id);
+
+     res.cookie("token", token);
+     res.json({ success:true, message: "user login successfull"});
+
+    } catch (error) {
+        console.log(error);
+        res.status(error.statusCode  || 500).json({message: error.message || "internal server error"})
+    }
+};
+
+const userLogout = async (req, res, next) => {
+    try {
+        res.clearCookie('token')
+        res.json({ message: "user logout success", success: true});
+
+    } catch (error) {
+        console.log(error);
+        res.status(error.statusCode  || 500).json({message: error.message || "internal server error"})
+    }
+};
+const userProfile = async (req, res, next) => {
+try {
+     const user = req.user;
+     console.log(user, "========user");
+
+    const { id } = req.params;
+    const  userData = await User.findOne({_id: user.id });
+    res.json({ success: true, message: "user data fetched", data: userData });
+
+    } catch (error) {
+        console.log(error);
+        res.status(error.statusCode  || 500).json({message: error.message || "internal server error"})
+    }
+};
+
+
+
+const checkUser = async (req, res, next) => {
+    try {
+          const { user} = req;
+          if (!user){
+            res.status(401).json({success:false,message:'user not authorized'})
+          }
+        res.json({ success: true, message: "user data fetched", data: userData });
+    
+        } catch (error) {
+            console.log(error);
+            res.status(error.statusCode  || 500).json({message: error.message || "internal server error"})
+        }
+    };
+
+
+module.exports = { userSignup, userLogin, userLogout, userProfile, checkUser};

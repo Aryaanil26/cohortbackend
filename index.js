@@ -1,10 +1,16 @@
 const express = require("express");
 const { apiRouter } = require("./routes/v2");
-const app = express();
+const { connectDB } = require("./config/db");
+const cookieParser =require("cookie-parser");
 const port = 3000;
 
+const app = express();
+app.use(express.json())
+app.use(cookieParser())
 
-app.get("/", (req,res) => {
+connectDB();
+
+app.get("/", (req, res) => {
     res.send("hello world");
 });
 
