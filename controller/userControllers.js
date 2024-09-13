@@ -18,7 +18,7 @@ const userSignup = async (req, res, next) => {
         const hashedPassword = bcrypt.hashSync(password, saltRounds);
         
 
-        const newUser = new User({ name, email, password, hashedPassword, phone, profilePic});
+        const newUser = new User({ name, email, password, hashedPassword, profilePic});
         await newUser.save();
 
         const token = generateToken(newUser._id);

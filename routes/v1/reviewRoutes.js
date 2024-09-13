@@ -1,9 +1,16 @@
 const express = require("express");
+const {createReview, getAllReviews, getReviewById, updateReviewById, deleteReviewById} = require("../../controller/reviewController")
 
 const router = express.Router();
 
-router.get("/",(req, res, next) =>{
-    res.send("accessed movie  route get method");
-});
 
-module.exports = {reviewRouter: router };
+
+router.post('/createreview', userAuth,createReview)
+router.patch('/updatereviewById', userAuth,updateReviewById)
+router.delete('/deletereviewById', userAuth,deleteReviewById)
+router.get('/getAllReviews', userAuth,getAllReviews)
+router.get('/getreviewById', userAuth,getReviewById)
+
+
+
+module.exports = { reviewRouter: router };

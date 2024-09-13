@@ -1,14 +1,16 @@
+require('dotenv').config()
 const express = require("express");
-const { apiRouter } = require("./routes/v2");
+const { apiRouter } = require('./routes/v2');
+const cookieParser = require("cookie-parser");
 const { connectDB } = require("./config/db");
-const cookieParser =require("cookie-parser");
+const app = express();
 const port = 3000;
 
-const app = express();
+connectDB();
+
 app.use(express.json())
 app.use(cookieParser())
 
-connectDB();
 
 app.get("/", (req, res) => {
     res.send("hello world");

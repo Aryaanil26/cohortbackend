@@ -10,4 +10,4 @@ const generateToken = (id, role ) => {
     }
 };
 
-module.exports = {generateToken};
+module.exports = { generateToken };

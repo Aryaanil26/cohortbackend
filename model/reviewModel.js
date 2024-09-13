@@ -20,8 +20,9 @@ const reviewSchema= new mongoose.Schema({
         default: "https:/encrypted-tbn0.gstatic.com/images?q=thn:ANd9GcRt_NZykul07nU3cliFuRZQr4_q-godkRTmRA&s",
     },
 
+
 });
 
-const Review =mongoose.model("Review", reviewSchema);
+const Review = mongoose.model("Review", reviewSchema);
 
-module.exports ={ Review };
+module.exports = { Review };
