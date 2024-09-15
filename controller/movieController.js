@@ -3,19 +3,53 @@ const { Movie } = require("../model/movieModel");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { generateToken } = require("../utils/token");
+const { cloudinaryInstance } = require("../config/cloudinaryConfig");
+const { handleImageUpload } = require("../utils/imageUpload");
 
+// // Middleware to check if the user is authenticated
+// const authenticateAdmin = (req, res, next) => {
+//     let token;
 
+//     // Check Authorization header
+//     const authHeader = req.header('Authorization');
+//     if (authHeader && authHeader.startsWith('Bearer ')) {
+//         token = authHeader.replace('Bearer ', '');
+//     }
 
+//     // If not in Authorization header, check cookies
+//     if (!token && req.cookies && req.cookies.token) {
+//         token = req.cookies.token;
+//     }
+
+//     if (!token) {
+//         return res.status(401).json({ message: "Authentication required" });
+//     }
+
+//     try {
+//         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+//         req.admin = decoded;
+//         next();
+//     } catch (error) {
+//         return res.status(401).json({ message: "Invalid token" });
+//     }
+// };
+l
 // Create a new movie
 const createMovie = async (req, res) => {
     try {
         const { moviename,genre, description,thumbnail, rating } = req.body;
-        
+        let thumbnailUrl;
+            
+    if(req.file) {
+       thumbnailUrl = await handleImageUpload(req.file.path);
+        }
+
+
         const newMovie = new Movie({
             moviename,
             genre,
             description,
-            thumbnail,
+            thumbnail: thumbnailUrl,
             rating,
             adminId: req.admin.id // Add the user's ID to the movie
         });
@@ -25,6 +59,7 @@ const createMovie = async (req, res) => {
     } catch (error) {
         console.error("Error adding movie:", error);
         return res.status(500).json({ message: "Error adding movie", error: error.message });
+    
     }
 };
 
@@ -98,7 +133,7 @@ const deleteMovieById = async (req, res) => {
 };
 
 module.exports = {
-   
+    // authenticateAdmin,
     createMovie,
     getAllMovies,
     getMovieById,
