@@ -11,7 +11,12 @@ const adminAuth = async (req, res, next) => {
         if(!tokenVerified){
             return res.status(401).json({success:false,message: 'user not authorized'})
         }
-         
+        
+        
+
+        if(tokenVerified.role !== "admin"){
+            return res.status(401).json({ success: false,message :" user not authorized"})
+        }
         req.user = tokenVerified;
 
         next()

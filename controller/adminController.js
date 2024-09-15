@@ -21,10 +21,10 @@ const adminSignup = async (req, res, next) => {
         const newAdmin = new Admin({ role, email, password, hashedPassword});
         await newAdmin.save();
 
-        const token = generateToken(newAdmin._id);
+        const token = generateToken(newAdmin._id, 'admin');
 
      res.cookie("token", token);
-     res.json({ success:true, message: "user created successfully"});
+     res.json({ success:true, message: "admin created successfully"});
 
     } catch (error) {
         console.log(error);
@@ -40,18 +40,18 @@ const adminLogin = async (req, res, next) => {
             res.status(400).json({message: "all fields required"});
         }
 
-        const AdminExist = await Admin.findOne({ email });
-        if (!AdminExist) {
-            return res.status(404).json({ success: false, message: "user does  not exist"});
+        const adminExist = await Admin.findOne({ email });
+        if (!adminExist) {
+            return res.status(404).json({ success: false, message: "admin does  not exist"});
         }
       
-        const passwordMatch = bcrypt.compareSync(password, AdminExist.password);
+        const passwordMatch = bcrypt.compareSync(password, adminExist.password);
         if(!passwordMatch)  {
-            return res.status(401).json({message: "user not authorized" });
+            return res.status(401).json({message: "admin not authorized" });
         }
 
 
-       const token = generateToken(AdminExist._id);
+       const token = generateToken(adminExist._id, 'admin');
 
      res.cookie("token", token);
      res.json({ success:true, message: "admin login successfull"});
@@ -72,15 +72,30 @@ const adminLogout = async (req, res, next) => {
         res.status(error.statusCode  || 500).json({message: error.message || "internal server error"})
     }
 };
-
 const adminProfile = async (req, res, next) => {
+try {
+     const mentor = req.user;
+    //  console.log(user, "========user");
+
+    const { id } = req.params;
+    const  mentorData = await Mentor.findOne({_id: mentor.id });
+    res.json({ success: true, message: "mentor data fetched", data: mentorData });
+
+    } catch (error) {
+        console.log(error);
+        res.status(error.statusCode  || 500).json({message: error.message || "internal server error"})
+    }
+};
+
+
+
+const checkAdmin = async (req, res, next) => {
     try {
-         const admin = req.admin;
-         console.log(admin, "========admin");
-    
-        const { id } = req.params;
-        const  adminData = await Admin.findOne({_id: admin.id });
-        res.json({ success: true, message: "user data fetched", data: adminData });
+          const { user} = req;
+          if (!user){
+            res.status(401).json({success:false,message:'user not authorized'})
+          }
+        res.json({ success: true, message: "user data fetched", data: userData });
     
         } catch (error) {
             console.log(error);
@@ -90,7 +105,4 @@ const adminProfile = async (req, res, next) => {
 
 
 
-
-
-
-module.exports = { adminSignup, adminLogin, adminLogout, adminProfile};
+    module.exports = { adminSignup, adminLogin, adminLogout, adminProfile};

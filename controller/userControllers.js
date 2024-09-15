@@ -28,7 +28,7 @@ const userSignup = async (req, res, next) => {
 
     } catch (error) {
         console.log(error);
-        res.status(error.statusCode  || 500).json({message: error.message || "internal server error"})
+        next(error)
     }
 };
 
@@ -58,7 +58,7 @@ const userLogin = async (req, res, next) => {
 
     } catch (error) {
         console.log(error);
-        res.status(error.statusCode  || 500).json({message: error.message || "internal server error"})
+       next(error)
     }
 };
 
@@ -69,7 +69,7 @@ const userLogout = async (req, res, next) => {
 
     } catch (error) {
         console.log(error);
-        res.status(error.statusCode  || 500).json({message: error.message || "internal server error"})
+       next(error)
     }
 };
 const userProfile = async (req, res, next) => {
@@ -83,7 +83,7 @@ try {
 
     } catch (error) {
         console.log(error);
-        res.status(error.statusCode  || 500).json({message: error.message || "internal server error"})
+      next(error)
     }
 };
 
@@ -99,7 +99,7 @@ const checkUser = async (req, res, next) => {
     
         } catch (error) {
             console.log(error);
-            res.status(error.statusCode  || 500).json({message: error.message || "internal server error"})
+          next(error)
         }
     };
 
