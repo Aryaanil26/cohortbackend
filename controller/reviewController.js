@@ -35,13 +35,12 @@ const authenticateUser = (req, res, next) => {
 // Create a new review
 const createReview = async (req, res) => {
     try {
-        const { moviename, description, review, thumbnail } = req.body;
+        const { moviename, review, rating } = req.body;
         
         const newReview = new Review({
             moviename,
-            description,
             review,
-            thumbnail,
+            rating,
             userId: req.user.id // Add the user's ID to the review
         });
         
