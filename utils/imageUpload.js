@@ -10,4 +10,4 @@ const handleImageUpload = async(path)=>{
     }
 }
 
-module.exports = {handleImageUpload};
+module.exports = { handleImageUpload };
