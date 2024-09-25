@@ -1,17 +1,15 @@
 const express = require("express");
-const {createReview, getAllReviews, getReviewById, updateReviewById, deleteReviewById} = require("../../controller/reviewController")
+const {addReview, getAverageRating, deleteReview,getMovieReviews} = require("../../controller/reviewController")
 const { userAuth } = require("../../middlewares/userAuth");
 
 const router = express.Router();
 
 
 
-router.post('/createreview', userAuth,createReview)
-router.patch('/updatereviewById', userAuth,updateReviewById)
-router.delete('/deletereviewById', userAuth,deleteReviewById)
-router.get('/getAllReviews', userAuth,getAllReviews)
-router.get('/getreviewById', userAuth,getReviewById)
-
+router.post('/addreview', userAuth,addReview)
+router.patch('/averagerating', userAuth,getAverageRating)
+router.delete('/deletereview', userAuth,deleteReview)
+router.delete('/moviereviews', userAuth,getMovieReviews)
 
 
 module.exports = { reviewRouter: router };

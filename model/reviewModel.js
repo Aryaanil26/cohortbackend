@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 
 const reviewSchema= new mongoose.Schema({
+    userId :{
+        type: mongoose.Schema.Types.userId,
+        ref: "User",
+        required: true,
+    },
     moviename: {
         type:String,
         required:true,

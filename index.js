@@ -5,10 +5,13 @@ const cookieParser = require("cookie-parser");
 const { connectDB } = require("./config/db");
 const { handleError } = require('./utils/error');
 const app = express();
+const cors = require('cors'); 
 const port = 3000;
 
 connectDB();
 
+
+const cors = require('cors'); 
 app.use(express.json())
 app.use(cookieParser())
 

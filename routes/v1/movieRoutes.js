@@ -1,5 +1,5 @@
 const express = require("express");
-const {createMovie, getMovies, getMovieDetails, updateMovie, deleteMovie} = require("../../controller/movieController")
+const {createMovie,  updateMovie, deleteMovie} = require("../../controller/movieController")
 const {adminAuth } = require("../../middlewares/adminAuth");
 const { upload } = require("../../middlewares/multer");
 
