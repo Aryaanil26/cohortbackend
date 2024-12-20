@@ -8,8 +8,8 @@ const router = express.Router();
 
 
 router.post('/createmovie',adminAuth, upload.single('thumbnail') ,createMovie)
-router.patch('/updatemovie',adminAuth, upload.single('thumbnail'),updateMovie)
-router.delete('/deletemovie', adminAuth,deleteMovie)
+router.patch('/updatemovie/:movieId',adminAuth, upload.single('thumbnail'),updateMovie)
+router.delete('/deletemovie/:movieId', adminAuth,deleteMovie)
 
 
 

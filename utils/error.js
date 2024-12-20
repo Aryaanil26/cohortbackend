@@ -9,4 +9,4 @@ try {
 }
 };
 
-module.exports = {handleError};
+module.exports = { handleError };

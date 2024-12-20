@@ -1,5 +1,5 @@
-var jwt = require("jsonwebtoken");
-// const dotenv = require('dotenv')
+var jwt = require('jsonwebtoken');
+
 
 const generateToken = (id, role ) => {
     try {
@@ -9,5 +9,6 @@ const generateToken = (id, role ) => {
      console.log(error);
     }
 };
+
 
 module.exports = { generateToken };

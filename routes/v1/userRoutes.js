@@ -9,12 +9,13 @@ router.post("/login", userLogin);
 router.post("/logout", userLogout);
 
 
-router.get("/profile", userAuth, userProfile);
+router.get("/profile",userAuth,  userProfile);
 router.get("/update");
 router.get("/delete");
 
 router.get("/userList");
 
-router.get("/check-user", userAuth, checkUser)
+router.get("/check-user",  checkUser)
 
-module.exports = {userRouter: router };
+// module.exports = { userRouter: router };
+module.exports = { userRouter: router };

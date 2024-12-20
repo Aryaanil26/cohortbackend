@@ -14,6 +14,13 @@ const movieSchema= new mongoose.Schema({
     genre:{
       type:String
     },
+    name: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    description: String,
+    releaseDate: Date,
     rating: {
      type:Number,
      require: true,
@@ -24,7 +31,10 @@ const movieSchema= new mongoose.Schema({
         type:String,
         default: "https:/encrypted-tbn0.gstatic.com/images?q=thn:ANd9GcRt_NZykul07nU3cliFuRZQr4_q-godkRTmRA&s",
     },
-
+    // admin: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "admin",
+    // },
 
 });
 

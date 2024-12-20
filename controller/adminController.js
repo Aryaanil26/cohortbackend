@@ -18,7 +18,7 @@ const adminSignup = async (req, res, next) => {
         const hashedPassword = bcrypt.hashSync(password, saltRounds);
         
 
-        const newAdmin = new Admin({ role, email, password, hashedPassword});
+        const newAdmin = new Admin({ role, email, password: hashedPassword});
         await newAdmin.save();
 
         const token = generateToken(newAdmin._id, 'admin');

@@ -1,9 +1,10 @@
+//require('dotenv').config();
 const jwt = require("jsonwebtoken");
 
 const adminAuth = async (req, res, next) => {
     try {
         
-        const { token } = req.cookie;
+        const { token } = req.cookies;
         if(!token) {
             return res.status(401).json({ success: false, message:"admin not authorized" });
         }
@@ -14,10 +15,10 @@ const adminAuth = async (req, res, next) => {
         
         
 
-        if(tokenVerified.role !== "admin"){
+        if(tokenVerified.role !== "admin") {
             return res.status(401).json({ success: false,message :" admin not authorized"})
         }
-        req.admin = tokenVerified;
+        req.user = tokenVerified;
 
         next()
     } catch (error) {
